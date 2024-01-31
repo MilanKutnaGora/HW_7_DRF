@@ -1,12 +1,14 @@
 from rest_framework import serializers
 
-from lessons.models import Course, Lesson, Payment
+from lessons.models import Course, Lesson, Payment, CourseSubscription
+from lessons.validators import UrlValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
+        validators = [UrlValidator(url='link_video')]
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -27,6 +29,16 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = '__all__'
+
+
+class SubscribeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseSubscription
+        fields = '__all__'
+        validators = [
+            serializers.UniqueTogetherValidator(fields=['course'],
+                                                queryset=CourseSubscription.objects.all())
+            ]
 
 
 

@@ -3,15 +3,17 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
 
-from lessons.models import Course, Lesson, Payment
+from lessons.models import Course, Lesson, Payment, CourseSubscription
+from lessons.paginators import CoursePaginator, LessonPaginator
 from lessons.permissions import IsModerator, IsOwnerOrStaffUser
-from lessons.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
+from lessons.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscribeSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = CoursePaginator
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -22,6 +24,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = LessonPaginator
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
@@ -44,3 +47,24 @@ class PaymentListAPIView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('paid_course', 'paid_lesson', 'payment_type',)
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscribeSerializer
+    permission_classes = [IsAuthenticated, IsModerator]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class SubscriptionListAPIView(generics.ListAPIView):
+    serializer_class = SubscribeSerializer
+
+    def get_queryset(self):
+        return CourseSubscription.objects.filter(user=self.request.user)
+
+
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+    serializer_class = SubscribeSerializer
+    queryset = CourseSubscription.objects.all()
+    permission_classes = [IsAuthenticated, IsModerator]
