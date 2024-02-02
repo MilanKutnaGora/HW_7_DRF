@@ -8,7 +8,7 @@ from lessons.models import Lesson, Course, CourseSubscription
 from users.models import User
 
 
-class LessonsTestCase(APITestCase):
+class LessonTestCase(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create(email='test@sky.pro', is_active=True)
@@ -27,7 +27,7 @@ class LessonsTestCase(APITestCase):
         data = {
             'title': 'Test lesson',
             'description': 'Test description',
-            'course': 'self.course',
+            'course': self.course,
             'link_video': 'https://www.youtube.com/watch?v=rCLDTrFNP4E'
         }
         response = self.client.post(
@@ -44,6 +44,7 @@ class LessonsTestCase(APITestCase):
             2
         )
 
+
     def test_lesson_list(self):
         response = self.client.get(
             reverse('lessons:lesson-list')
@@ -56,7 +57,7 @@ class LessonsTestCase(APITestCase):
 
         self.assertEqual(
             response.json(),
-            {'count': 0, 'next': None, 'previous': None, 'results': [
+            {'count': 1, 'next': None, 'previous': None, 'results': [
                 {'id': self.lesson.id, 'course': 'Test course', 'title': 'Test lesson',
                  'description': 'Test description',
                  'preview': None, 'link_video': None, 'owner': self.lesson.owner.id}]}

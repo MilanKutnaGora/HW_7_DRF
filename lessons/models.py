@@ -30,7 +30,7 @@ class Lesson(models.Model):
     preview = models.ImageField(upload_to='lessons/', verbose_name="картинка", **NULLABLE)
     link_video = models.URLField(verbose_name='ссылка на видео', **NULLABLE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс', **NULLABLE,
-                               related_name='lessons')
+                               related_name='lesson')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE)
 
     def __str__(self):
