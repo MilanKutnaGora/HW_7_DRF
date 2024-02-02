@@ -1,10 +1,12 @@
 from rest_framework import serializers
+from rest_framework.relations import SlugRelatedField
 
 from lessons.models import Course, Lesson, Payment, CourseSubscription
 from lessons.validators import UrlValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    course = SlugRelatedField(slug_field="title", queryset=Course.objects.all())
     class Meta:
         model = Lesson
         fields = '__all__'
