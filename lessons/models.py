@@ -16,6 +16,7 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='lessons/', verbose_name='картинка', **NULLABLE)
     description = models.TextField(verbose_name='описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE)
+    price = models.IntegerField(default=1000, verbose_name='cтоимость курса')
 
     def __str__(self):
         return f'{self.title}'
@@ -49,7 +50,8 @@ class Payment(models.Model):
     paid_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='оплаченный урок', **NULLABLE)
     payment_summ = models.IntegerField(verbose_name='сумма оплаты')
     payment_type = models.CharField(choices=PAY_TYPES, default=PAY_CASH, max_length=25, verbose_name='способ оплаты')
-
+    is_successful = models.BooleanField(default=False, verbose_name='Статус платежа')
+    session = models.CharField(max_length=150, verbose_name='cессия для оплаты', **NULLABLE)
     def __str__(self):
         return f'{self.user} - {self.pay_date}'
 
