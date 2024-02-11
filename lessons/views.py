@@ -10,6 +10,7 @@ from lessons.permissions import IsModerator, IsOwnerOrStaffUser
 from lessons.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscribeSerializer, \
     PaymentCreateSerializer
 from lessons.services import get_session, retrieve_session
+from lessons.tasks import send_add_lesson, send_update_course
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -18,10 +19,23 @@ class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     pagination_class = CoursePaginator
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        course_id = serializer.save(owner=self.request.user).id
+        send_update_course.delay(course_id)
+
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, IsModerator]
+
+    def perform_create(self, serializer):
+        course_id = serializer.save(owner=self.request.user).course.id
+        lesson_id = serializer.save(owner=self.request.user).id
+        send_add_lesson.delay(course_id, lesson_id)
+
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
@@ -54,6 +68,8 @@ class PaymentListAPIView(generics.ListAPIView):
 
 class PaymentCreateAPIView(generics.CreateAPIView):
     serializer_class = PaymentCreateSerializer
+
+
 
     def perform_create(self, serializer):
         course = serializer.validated_data.get('paid_course')
