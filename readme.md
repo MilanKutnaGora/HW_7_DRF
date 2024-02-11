@@ -23,9 +23,9 @@
 
 Для запуска Celery открыть другой экземпляр командной строки и запустить celery -A config worker -l INFO -P eventlet
 
-Для запуска django-celery-beat открыть другой экземляр командной строки и запустить celery -A config beat -l INFO -S Django
+Для запуска django-celery-beat открыть другой экземляр командной строки и запустить celery -A config beat -l INFO
 
-Кастомная команда для создания суперпользователя python manage.py csu
+
 
 Используемые технологии:
 DjangoRestFramework
