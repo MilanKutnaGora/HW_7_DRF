@@ -33,6 +33,7 @@ def send_add_lesson(lesson_id, course_id):
 
 @shared_task
 def check_last_login():
+    print("проверить последний вход пользователя ")
     now = datetime.datetime.now()
     now = timezone.make_aware(now, timezone.get_current_timezone())
     for user in User.objects.all():
