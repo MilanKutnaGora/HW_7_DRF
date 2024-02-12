@@ -7,23 +7,23 @@
 
 Склонировать репозиторий
 
-Создать и активировать виртуальное окружениеpython -m venv ваша_папка_для_виртуального_окружения
+1.  Создать и активировать виртуальное окружениеpython -m venv ваша_папка_для_виртуального_окружения
 
-Установить зависимости командой pip install -r requirements.txt
+2.  Установить зависимости командой pip install -r requirements.txt
 
-Создать вашу базу данных для работы с проектом CREATE DATABASE ваша_база_данных;
+3.  Создать вашу базу данных для работы с проектом CREATE DATABASE ваша_база_данных;
 
-Создать миграции через python manage.py makemigrations и применить их python manage.py migrate
+4.  Создать миграции через python manage.py makemigrations и применить их python manage.py migrate
 
-В файле .env.sample заполнить данные для работы с проектом и переименовать его в .env
+5.  В файле .env.sample заполнить данные для работы с проектом и переименовать его в .env
 
-Открыть командную строку и запустить python manage.py runserver
+6.  Открыть командную строку и запустить python manage.py runserver
 
-Для запуска Celery открыть другой экземпляр командной строки и запустить celery -A config worker -l INFO -P eventlet
+7.  Для запуска Celery открыть другой экземпляр командной строки и запустить celery -A config worker -l INFO -P eventlet
 
-Для запуска django-celery-beat открыть другой экземляр командной строки и запустить celery -A config beat -l INFO
+8.  Для запуска django-celery-beat открыть другой экземляр командной строки и запустить celery -A config beat -l INFO
 
-Кастомная команда для создания суперпользователя python manage.py cssu
+9.  Кастомная команда для создания суперпользователя python manage.py cssu
 
 
 Используемые технологии:
