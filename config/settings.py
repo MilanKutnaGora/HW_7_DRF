@@ -95,6 +95,8 @@ DATABASES = {
         'NAME': os.getenv('HW_7_DRF_DB_NAME'),
         'USER': os.getenv('HW_7_DRF_DB_USER'),
         'PASSWORD': os.getenv('HW_7_DRF_DB_PASSWORD'),
+        'HOST': os.environ.get('HW_7_DB_HOST'),
+        'PORT': os.environ.get('HW_7_DB_PORT')
 
     }
 }
