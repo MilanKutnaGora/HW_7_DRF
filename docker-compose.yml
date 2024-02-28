@@ -12,9 +12,9 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "Jhfkrfvijn2022"
-      POSTGRES_DB: "drf_hw_db"
+      POSTGRES_USER: HW_7_DRF_DB_USER
+      POSTGRES_PASSWORD: HW_7_DRF_DB_PASSWORD
+      POSTGRES_DB: HW_7_DRF_DB_NAME
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
